@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Invitation For You ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#E8C5C8',
+                        warmGold: '#D4AF37',
+                        champagne: '#F7E7CE',
+                        deepWine: '#2A0812',
+                        romanticRed: '#E63946',
+                        softPink: '#FFD1DC'
+                    },
+                    fontFamily: {
+                        script: ['Great Vibes', 'cursive'],
+                        serifHeader: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #120409;
+            color: #f7e7ce;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Ambient Bokeh Background */
+        .bokeh-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bokeh {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.18;
+            filter: blur(50px);
+            animation: floatBokeh 16s infinite ease-in-out alternate;
+        }
+
+        @keyframes floatBokeh {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -60px) scale(1.15); }
+            100% { transform: translate(-30px, 40px) scale(0.9); }
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(36, 12, 22, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(212, 175, 55, 0.08);
+        }
+
+        /* Animations */
+        .fade-in-card {
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Floating Hearts Particles */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0.4) rotate(0deg);
+                opacity: 0;
+            }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% {
+                transform: translateY(-10vh) scale(1.1) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Selection Card Hover Effects */
+        .vibe-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .vibe-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.8);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.25);
+        }
+        .vibe-card.selected {
+            background: rgba(230, 57, 70, 0.2);
+            border-color: #D4AF37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Glowing Accent Buttons */
+        .btn-glow {
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(230, 57, 70, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Evading No button */
+        #noBtn {
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
+
+        /* Hide scrollbar for custom styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 5, 10, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between items-center p-4 md:p-8">
+
+    <!-- Ambient Background Light Orbs -->
+    <div class="bokeh-container">
+        <div class="bokeh w-[400px] h-[400px] bg-romanticRed top-10 left-10"></div>
+        <div class="bokeh w-[500px] h-[500px] bg-warmGold bottom-10 right-10" style="animation-delay: -5s;"></div>
+        <div class="bokeh w-[350px] h-[350px] bg-roseGold top-1/2 left-1/3" style="animation-delay: -10s;"></div>
+    </div>
+
+    <!-- Floating Particles Layer -->
+    <div id="heart-container"></div>
+
+    <!-- Top Navigation Header -->
+    <header class="relative z-20 w-full max-w-4xl flex justify-between items-center mb-6">
+        <div class="flex items-center gap-2">
+            <span class="font-serifHeader text-lg sm:text-xl text-warmGold tracking-widest">FOR YOU</span>
+            <span class="text-xs text-roseGold/60 font-mono">| DATE PLANNER</span>
+        </div>
+        <button id="audioToggleBtn" onclick="toggleAmbience()" class="flex items-center gap-2 bg-deepWine/80 border border-warmGold/30 text-roseGold px-3 py-1.5 rounded-full text-xs hover:bg-deepWine transition-all">
+            <i id="audioIcon" class="fa-solid fa-music text-warmGold"></i>
+            <span id="audioLabel" class="hidden sm:inline">Play Sound</span>
+        </button>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="relative z-10 w-full max-w-2xl my-auto">
+
+        <!-- STEP 1: HERO INVITATION QUESTION -->
+        <section id="step1Hero" class="glass-card rounded-3xl p-6 sm:p-10 text-center fade-in-card relative overflow-hidden">
+            <div class="text-3xl sm:text-4xl text-warmGold mb-3">✨</div>
+            <p class="text-xs sm:text-sm uppercase tracking-[0.3em] text-roseGold font-semibold mb-2">A Special Request</p>
+            
+            <h1 class="font-script text-5xl sm:text-7xl text-warmGold mb-6 drop-shadow-md">
+                Would you like to go on a date with me?
+            </h1>
+
+            <p class="text-champagne/90 text-sm sm:text-base italic leading-relaxed mb-8 max-w-md mx-auto">
+                "I would love nothing more than to spend quality time with you. The best part? You get to pick everything!"
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 min-h-[100px] relative">
+                <!-- YES Option 1 -->
+                <button onclick="goToStep2()" class="btn-glow bg-gradient-to-r from-romanticRed to-rose-600 text-white font-semibold px-8 py-3.5 rounded-full text-sm sm:text-base w-full sm:w-auto tracking-wider flex items-center justify-center gap-2">
+                    <span>Yes! I'd love to ❤️</span>
+                </button>
+
+                <!-- YES Option 2 -->
+                <button onclick="goToStep2()" class="bg-warmGold/20 hover:bg-warmGold/30 border border-warmGold/60 text-champagne font-semibold px-8 py-3.5 rounded-full text-sm sm:text-base w-full sm:w-auto tracking-wider transition-all">
+                    <span>Of course! ✨</span>
+                </button>
+
+                <!-- Playful Evasion NO Option -->
+                <button id="noBtn" onmouseover="evadeNo()" onclick="handleNoClick()" class="bg-black/40 border border-roseGold/30 text-roseGold/70 px-6 py-3.5 rounded-full text-sm w-full sm:w-auto">
+                    <span>No 🥺</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 2: CUSTOM DATE BUILDER FORM -->
+        <section id="step2Builder" class="glass-card rounded-3xl p-6 sm:p-10 fade-in-card hidden">
+            <div class="text-center mb-8">
+                <p class="text-xs uppercase tracking-[0.25em] text-roseGold font-semibold mb-1">Your Choice, My Pleasure</p>
+                <h2 class="font-script text-4xl sm:text-5xl text-warmGold">Design Our Date</h2>
+                <div class="w-16 h-[1px] bg-warmGold/40 mx-auto mt-2"></div>
+            </div>
+
+            <form id="datePlannerForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                
+                <!-- 1. Date Type / Vibe Selector -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-roseGold font-semibold mb-3">
+                        1. What kind of date are you in the mood for?
+                    </label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div onclick="selectVibe(this, 'Fine Dining & Romance 🍷')" class="vibe-card bg-black/40 border border-warmGold/20 rounded-xl p-3.5 text-center">
+                            <div class="text-2xl mb-1">🍷</div>
+                            <div class="text-xs font-semibold text-champagne">Fine Dining</div>
+                            <div class="text-[10px] text-roseGold/60">Candlelight & Wine</div>
+                        </div>
+
+                        <div onclick="selectVibe(this, 'Arcade & Fun Games 🎮')" class="vibe-card bg-black/40 border border-warmGold/20 rounded-xl p-3.5 text-center">
+                            <div class="text-2xl mb-1">🎮</div>
+                            <div class="text-xs font-semibold text-champagne">Fun & Arcade</div>
+                            <div class="text-[10px] text-roseGold/60">Games & Laughter</div>
+                        </div>
+
+                        <div onclick="selectVibe(this, 'Movie & Cozy Blanket 🍿')" class="vibe-card bg-black/40 border border-warmGold/20 rounded-xl p-3.5 text-center">
+                            <div class="text-2xl mb-1">🍿</div>
+                            <div class="text-xs font-semibold text-champagne">Movie Night</div>
+                            <div class="text-[10px] text-roseGold/60">Cozy Snacks & Film</div>
+                        </div>
+
+                        <div onclick="selectVibe(this, 'Coffee & Stroll ☕')" class="vibe-card bg-black/40 border border-warmGold/20 rounded-xl p-3.5 text-center">
+                            <div class="text-2xl mb-1">☕</div>
+                            <div class="text-xs font-semibold text-champagne">Coffee & Stroll</div>
+                            <div class="text-[10px] text-roseGold/60">Warm Talks & Walk</div>
+                        </div>
+
+                        <div onclick="selectVibe(this, 'Outdoor Picnic / Nature 🌿')" class="vibe-card bg-black/40 border border-warmGold/20 rounded-xl p-3.5 text-center">
+                            <div class="text-2xl mb-1">🌿</div>
+                            <div class="text-xs font-semibold text-champagne">Outdoor Picnic</div>
+                            <div class="text-[10px] text-roseGold/60">Fresh Air & Sun</div>
+                        </div>
+
+                        <div onclick="selectVibe(this, 'Surprise Me! ✨')" class="vibe-card bg-black/40 border border-warmGold/20 rounded-xl p-3.5 text-center">
+                            <div class="text-2xl mb-1">✨</div>
+                            <div class="text-xs font-semibold text-champagne">Surprise Me</div>
+                            <div class="text-[10px] text-roseGold/60">You Choose Everything</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="selectedVibeInput" required>
+                </div>
+
+                <!-- 2. Date & Time Picker -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-roseGold font-semibold mb-2">
+                            2. Preferred Date & Time
+                        </label>
+                        <input type="datetime-local" id="dateTimeInput" required class="w-full bg-black/50 border border-warmGold/30 rounded-xl p-3 text-sm text-champagne focus:outline-none focus:border-warmGold transition-all">
+                    </div>
+
+                    <!-- 3. Location Selector & Quick Suggestions -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-roseGold font-semibold mb-2">
+                            3. Where should we go?
+                        </label>
+                        <input type="text" id="locationInput" placeholder="e.g. Italian Restaurant or Cozy Cafe" required class="w-full bg-black/50 border border-warmGold/30 rounded-xl p-3 text-sm text-champagne focus:outline-none focus:border-warmGold transition-all mb-2">
+                        
+                        <!-- Quick Location Chips -->
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="setQuickLocation('Rooftop Restaurant')" class="text-[10px] bg-warmGold/10 hover:bg-warmGold/20 border border-warmGold/30 text-roseGold px-2 py-0.5 rounded-full">Rooftop Diner</button>
+                            <button type="button" onclick="setQuickLocation('Cozy Coffee Shop')" class="text-[10px] bg-warmGold/10 hover:bg-warmGold/20 border border-warmGold/30 text-roseGold px-2 py-0.5 rounded-full">Cozy Cafe</button>
+                            <button type="button" onclick="setQuickLocation('Beach Sunset')" class="text-[10px] bg-warmGold/10 hover:bg-warmGold/20 border border-warmGold/30 text-roseGold px-2 py-0.5 rounded-full">Beach Sunset</button>
+                            <button type="button" onclick="setQuickLocation('Park Picnic')" class="text-[10px] bg-warmGold/10 hover:bg-warmGold/20 border border-warmGold/30 text-roseGold px-2 py-0.5 rounded-full">Park Picnic</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Special Requests / Cravings -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-roseGold font-semibold mb-2">
+                        4. Special Wishes or Cravings (Optional)
+                    </label>
+                    <textarea id="notesInput" rows="2" placeholder="Any specific food cravings, dress code preference, or song requests?" class="w-full bg-black/50 border border-warmGold/30 rounded-xl p-3 text-sm text-champagne focus:outline-none focus:border-warmGold transition-all"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-glow w-full bg-gradient-to-r from-romanticRed to-rose-600 text-white font-bold py-4 rounded-xl text-base tracking-wider transition-all mt-4 flex items-center justify-center gap-2">
+                    <span>Lock In Our Date ❤️</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- STEP 3: DATE CONFIRMATION TICKET & COUNTDOWN -->
+        <section id="step3Ticket" class="glass-card rounded-3xl p-6 sm:p-10 text-center fade-in-card hidden relative overflow-hidden">
+            
+            <div class="inline-block bg-romanticRed/20 border border-romanticRed text-romanticRed px-4 py-1 rounded-full text-xs font-semibold mb-4 animate-pulse">
+                ✨ DATE CONFIRMED ✨
+            </div>
+
+            <h2 class="font-script text-5xl sm:text-6xl text-warmGold mb-2">It's Official!</h2>
+            <p class="text-champagne/80 text-xs sm:text-sm italic mb-6">I can't wait to treat you to a fantastic time.</p>
+
+            <!-- Styled Ticket Card -->
+            <div class="bg-black/50 border border-warmGold/40 rounded-2xl p-6 text-left mb-6 relative">
+                <div class="border-b border-warmGold/20 pb-4 mb-4 flex justify-between items-center">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-roseGold/60 block">DATE VIBE</span>
+                        <span id="ticketVibe" class="text-base font-bold text-warmGold">Fine Dining & Romance 🍷</span>
+                    </div>
+                    <div class="text-2xl text-warmGold">🎟️</div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-roseGold/60 block">WHEN</span>
+                        <span id="ticketDateTime" class="text-sm font-semibold text-champagne">Saturday, Oct 28 • 7:00 PM</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-roseGold/60 block">WHERE</span>
+                        <span id="ticketLocation" class="text-sm font-semibold text-champagne">Rooftop Restaurant</span>
+                    </div>
+                </div>
+
+                <div id="ticketNotesContainer" class="border-t border-warmGold/10 pt-3 hidden">
+                    <span class="text-[10px] uppercase tracking-widest text-roseGold/60 block">SPECIAL NOTES</span>
+                    <p id="ticketNotes" class="text-xs italic text-roseGold/90">"Looking forward to Italian pasta!"</p>
+                </div>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="mb-6">
+                <p class="text-xs uppercase tracking-widest text-roseGold/70 mb-3 font-semibold">Counting Down To Our Moment</p>
+                <div class="grid grid-cols-4 gap-2 max-w-xs mx-auto">
+                    <div class="bg-black/40 border border-warmGold/20 p-2.5 rounded-xl">
+                        <span id="cdDays" class="text-xl sm:text-2xl font-bold text-warmGold block">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-roseGold/70">Days</span>
+                    </div>
+                    <div class="bg-black/40 border border-warmGold/20 p-2.5 rounded-xl">
+                        <span id="cdHours" class="text-xl sm:text-2xl font-bold text-warmGold block">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-roseGold/70">Hours</span>
+                    </div>
+                    <div class="bg-black/40 border border-warmGold/20 p-2.5 rounded-xl">
+                        <span id="cdMins" class="text-xl sm:text-2xl font-bold text-warmGold block">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-roseGold/70">Mins</span>
+                    </div>
+                    <div class="bg-black/40 border border-warmGold/20 p-2.5 rounded-xl">
+                        <span id="cdSecs" class="text-xl sm:text-2xl font-bold text-warmGold block">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-roseGold/70">Secs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="copySummary()" class="flex-1 bg-warmGold/20 hover:bg-warmGold/30 border border-warmGold/50 text-champagne py-3 rounded-xl text-xs font-semibold tracking-wider transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Copy Date Details</span>
+                </button>
+                <button onclick="resetPlanner()" class="bg-black/40 hover:bg-black/60 border border-roseGold/30 text-roseGold/80 py-3 px-5 rounded-xl text-xs transition-all">
+                    <span>Edit Choices</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 w-full text-center py-4 text-xs text-roseGold/50">
+        Created with ❤️ for a unforgettable date night
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // State Management
+        let selectedVibe = '';
+        let targetDate = null;
+        let countdownTimer = null;
+        let evadeCount = 0;
+
+        // Step Navigation
+        function goToStep2() {
+            triggerConfetti();
+            document.getElementById('step1Hero').classList.add('hidden');
+            const step2 = document.getElementById('step2Builder');
+            step2.classList.remove('hidden');
+            
+            // Set default datetime to tomorrow at 7:00 PM
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(19, 0, 0, 0);
+            document.getElementById('dateTimeInput').value = tomorrow.toISOString().slice(0, 16);
+        }
+
+        // Vibe Card Selector
+        function selectVibe(cardElement, vibeText) {
+            document.querySelectorAll('.vibe-card').forEach(c => c.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            selectedVibe = vibeText;
+            document.getElementById('selectedVibeInput').value = vibeText;
+        }
+
+        // Quick Location Helper
+        function setQuickLocation(locName) {
+            document.getElementById('locationInput').value = locName;
+        }
+
+        // Playful Evading NO Button
+        function evadeNo() {
+            if (evadeCount < 4) {
+                const noBtn = document.getElementById('noBtn');
+                const x = (Math.random() - 0.5) * 160;
+                const y = (Math.random() - 0.5) * 100;
+                noBtn.style.transform = `translate(${x}px, ${y}px) scale(${1 - evadeCount * 0.15})`;
+                evadeCount++;
+            }
+        }
+
+        function handleNoClick() {
+            alert("Nice try! But you're stuck with me ❤️ Please reconsider!");
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.transform = 'translate(0px, 0px) scale(1)';
+            evadeCount = 0;
+        }
+
+        // Form Submit
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            if (!selectedVibe) {
+                alert("Please select a date vibe/type!");
+                return;
+            }
+
+            const dateTimeVal = document.getElementById('dateTimeInput').value;
+            const locationVal = document.getElementById('locationInput').value;
+            const notesVal = document.getElementById('notesInput').value;
+
+            targetDate = new Date(dateTimeVal);
+
+            // Populate Ticket
+            document.getElementById('ticketVibe').innerText = selectedVibe;
+            document.getElementById('ticketLocation').innerText = locationVal;
+
+            const options = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+            document.getElementById('ticketDateTime').innerText = targetDate.toLocaleDateString('en-US', options);
+
+            if (notesVal.trim()) {
+                document.getElementById('ticketNotes').innerText = `"${notesVal}"`;
+                document.getElementById('ticketNotesContainer').classList.remove('hidden');
+            } else {
+                document.getElementById('ticketNotesContainer').classList.add('hidden');
+            }
+
+            // Transition to Ticket Step
+            document.getElementById('step2Builder').classList.add('hidden');
+            document.getElementById('step3Ticket').classList.remove('hidden');
+
+            // Celebration Effects
+            triggerConfetti();
+            playChimeSound();
+            startCountdown();
+        }
+
+        // Reset
+        function resetPlanner() {
+            document.getElementById('step3Ticket').classList.add('hidden');
+            document.getElementById('step2Builder').classList.remove('hidden');
+            if (countdownTimer) clearInterval(countdownTimer);
+        }
+
+        // Countdown Timer
+        function startCountdown() {
+            if (countdownTimer) clearInterval(countdownTimer);
+
+            function update() {
+                const now = new Date().getTime();
+                const diff = targetDate.getTime() - now;
+
+                if (diff <= 0) {
+                    document.getElementById('cdDays').innerText = "00";
+                    document.getElementById('cdHours').innerText = "00";
+                    document.getElementById('cdMins').innerText = "00";
+                    document.getElementById('cdSecs').innerText = "00";
+                    clearInterval(countdownTimer);
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cdDays').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('cdHours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('cdMins').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('cdSecs').innerText = seconds < 10 ? '0' + seconds : seconds;
+            }
+
+            update();
+            countdownTimer = setInterval(update, 1000);
+        }
+
+        // Confetti Burst
+        function triggerConfetti() {
+            confetti({
+                particleCount: 70,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#E63946', '#E8C5C8', '#D4AF37', '#FFFFFF']
+            });
+        }
+
+        // Copy Summary
+        function copySummary() {
+            const vibe = document.getElementById('ticketVibe').innerText;
+            const dt = document.getElementById('ticketDateTime').innerText;
+            const loc = document.getElementById('ticketLocation').innerText;
+            const text = `❤️ Our Date Plan ❤️\n\n• Vibe: ${vibe}\n• Date & Time: ${dt}\n• Location: ${loc}\n\nCan't wait! ✨`;
+
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            alert("Date details copied to clipboard! Share it with him ❤️");
+        }
+
+        // Floating Hearts Setup
+        function initFloatingHearts() {
+            const container = document.getElementById('heart-container');
+            const hearts = ['❤️', '💖', '✨', '💕', '🌹'];
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.fontSize = `${Math.random() * 14 + 10}px`;
+                heart.style.animationDuration = `${Math.random() * 6 + 6}s`;
+                heart.style.animationDelay = `${Math.random() * 8}s`;
+                container.appendChild(heart);
+            }
+        }
+
+        // Web Audio Chime Sound Effect
+        let audioCtx = null;
+        function playChimeSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (idx * 0.12));
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime + (idx * 0.12));
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (idx * 0.12) + 0.8);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + (idx * 0.12));
+                    osc.stop(audioCtx.currentTime + (idx * 0.12) + 0.8);
+                });
+            } catch(e) {}
+        }
+
+        // Audio Ambience
+        let isAudioPlaying = false;
+        let ambientOscs = [];
+        function toggleAmbience() {
+            if (!isAudioPlaying) {
+                try {
+                    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                    const freqs = [220, 277.18, 329.63, 440];
+                    ambientOscs = freqs.map(freq => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+                        gain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 2);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start();
+                        return { osc, gain };
+                    });
+
+                    isAudioPlaying = true;
+                    document.getElementById('audioIcon').className = 'fa-solid fa-volume-high text-warmGold animate-pulse';
+                    document.getElementById('audioLabel').innerText = 'Playing';
+                } catch(e) {}
+            } else {
+                if (ambientOscs.length) {
+                    ambientOscs.forEach(o => o.osc.stop());
+                    ambientOscs = [];
+                }
+                isAudioPlaying = false;
+                document.getElementById('audioIcon').className = 'fa-solid fa-music text-warmGold';
+                document.getElementById('audioLabel').innerText = 'Play Sound';
+            }
+        }
+
+        window.onload = function() {
+            initFloatingHearts();
+        };
+    </script>
+</body>
+</html>
